@@ -11,15 +11,17 @@ import (
 )
 
 func TestSubscribe(t *testing.T) {
+	//Runs grpc server in parallel
 	t.Run("grpc", func(t *testing.T) {
 		t.Parallel()
-		if err := Run(":4010"); err != nil {
-			log.Fatal(err)
-		}
+		mainctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		Run(mainctx, ":4010")
 	})
 
 	time.Sleep(3000 * time.Millisecond)
 
+	//Runs the client and does the rpc
 	t.Run("client", func(t *testing.T) {
 		t.Parallel()
 		var client subscribe.SubscribeServiceClient
@@ -29,7 +31,7 @@ func TestSubscribe(t *testing.T) {
 		}
 		client = subscribe.NewSubscribeServiceClient(conn)
 		done, err := client.SubscribeRequest(context.Background(), &subscribe.SubscribeBlock{
-			CNPJ: "13206867703",
+			CNPJ: "9192389128",
 			Name: "Thiago",
 		})
 		if err != nil {

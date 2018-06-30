@@ -15,9 +15,9 @@ func TestServer(t *testing.T) {
 	//Starts the grpc server to listen on port 4000
 	t.Run("grpc", func(t *testing.T) {
 		t.Parallel()
-		if err := Run(":4000"); err != nil {
-			log.Fatal(err)
-		}
+		mainctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		Run(mainctx, ":4000")
 	})
 
 	time.Sleep(3000 * time.Millisecond)
@@ -34,7 +34,7 @@ func TestServer(t *testing.T) {
 		client = publish.NewPublishServiceClient(conn)
 
 		done, err := client.PublishRequest(context.Background(), &publish.PublishBlock{
-			CNPJ:    "13206867703",
+			CNPJ:    "193819883918s",
 			Name:    "Thiago Boeker",
 			Content: "Hello world",
 			TimeStp: 132026568,

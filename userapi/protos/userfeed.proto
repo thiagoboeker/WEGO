@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/WEGOAPP/userapi/protos/userfeed";
+
+package userfeed;
+
+message User {
+    string OAuth = 1;
+}
+
+message Sub {
+    string CNPJ = 1;
+    string Name = 2;
+    string LastMessage = 3;
+    int64 LMtimestamp = 4;
+}
+
+message SubGroup {
+    repeated Sub Subs = 1;
+}
+
+service UserFeed {
+    rpc GetUserFeed(User) returns (SubGroup){}
+}

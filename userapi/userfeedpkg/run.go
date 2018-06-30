@@ -1,28 +1,25 @@
-package publishpkg
+package userfeedpkg
 
 import (
 	"fmt"
-	publish "github.com/WEGOAPP/clientapi/protos/publish"
+	userfeed "github.com/WEGOAPP/userapi/protos/userfeed"
 	"golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
 	"log"
 	"net"
 )
 
-//Run - runs the server
+//Run - runs the server on the port
 func Run(ctx context.Context, port string) struct{} {
 
-	//Server to build up
 	li, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("Stopped the server: %v", err)
+		log.Fatalf("Couldnt start server: %v", err)
 	}
-	fmt.Println("Running on port " + port)
-
-	//Passing grpc to the variables
 	s := &Server{}
 	grpcServer := grpc.NewServer()
-	publish.RegisterPublishServiceServer(grpcServer, s)
+	userfeed.RegisterUserFeedServer(grpcServer, s)
+	fmt.Printf("Server up on port %v\n", port)
 	grpcServer.Serve(li)
 
 	return <-ctx.Done()
