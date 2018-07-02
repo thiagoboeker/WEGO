@@ -5,8 +5,9 @@ option go_package = "github.com/WEGOAPP/userapi/protos/subscribe";
 package subscribe;
 
 message SubscribeBlock {
-    string CNPJ = 1;
-    string Name = 2;
+    string OAuth = 1;
+    string CNPJ = 2;
+    string Name = 3;
 }
 
 message Done{

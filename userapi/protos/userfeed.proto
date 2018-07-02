@@ -19,6 +19,24 @@ message SubGroup {
     repeated Sub Subs = 1;
 }
 
+message FeedBlock {
+    string Message = 2;
+    int64 TimeStamp = 3;
+}
+
+message MainFeed {
+    repeated Sub Feed = 1;
+}
+
+message ClientCNPJ {
+    string CNPJ = 1;
+}
+
+message FeedHistory {
+    repeated FeedBlock History = 1;
+}
+
 service UserFeed {
-    rpc GetUserFeed(User) returns (SubGroup){}
+    rpc GetFeedHistory(ClientCNPJ) returns (FeedHistory){}
+    rpc UserSubs(User) returns (MainFeed){}
 }

@@ -3,6 +3,7 @@ package publishpkg
 import (
 	"fmt"
 	publish "github.com/WEGOAPP/clientapi/protos/publish"
+	redis "github.com/garyburd/redigo/redis"
 	context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"time"
 )
 
+//Test client publish mechanism
 func TestServer(t *testing.T) {
 
 	//Starts the grpc server to listen on port 4000
@@ -34,10 +36,10 @@ func TestServer(t *testing.T) {
 		client = publish.NewPublishServiceClient(conn)
 
 		done, err := client.PublishRequest(context.Background(), &publish.PublishBlock{
-			CNPJ:    "193819883918s",
-			Name:    "Thiago Boeker",
-			Content: "Hello world",
-			TimeStp: 132026568,
+			CNPJ:    "741852",
+			Name:    "Chili Beans",
+			Content: "Ola pessoal! Promocao de oculos hoje",
+			TimeStp: 132026900,
 		})
 
 		if err != nil {
@@ -46,4 +48,13 @@ func TestServer(t *testing.T) {
 		fmt.Println(done)
 	})
 
+}
+
+//Test to ping the docker redis server
+func TestRedisConn(t *testing.T) {
+	_, err := redis.Dial("tcp", "192.168.99.100:3000")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Conexao realizada")
 }
